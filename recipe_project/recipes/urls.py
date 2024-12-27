@@ -1,4 +1,5 @@
 from django.urls import path
+from . import views
 from .views import (
     RecipeListByCategoryView,             
     RecipeListByIngredientView,           
@@ -26,5 +27,12 @@ urlpatterns = [
     
     
     path('users/create/', UserCreateView.as_view(), name='user-create'),
+   
+
+    path('recipes/ingredients/', RecipeListByMultipleIngredientsView.as_view(), name='recipe-by-multiple-ingredients'),
+
+   
+    path('recipes/by-multiple-ingredients/', views.recipes_by_multiple_ingredients, name='recipes-by-multiple-ingredients-fbv'),
+
 ]
 

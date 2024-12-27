@@ -7,6 +7,8 @@ from .serializers import RecipeSerializer
 from django.views.generic.edit import CreateView
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
 
 class UserCreateView(CreateView):
     model = User
@@ -53,3 +55,22 @@ class RecipeListByMultipleIngredientsView(generics.ListAPIView):
             query &= Q(ingredients__name__icontains=ingredient)
         return Recipe.objects.filter(query)
 
+# Retrieve recipes containing a specific ingredient
+@api_view(['GET'])
+def recipes_by_ingredient(request, ingredient):
+    """
+    Retrieve recipes containing a specific ingredient.
+    """
+    recipes = Recipe.objects.filter(ingredients__icontains=ingredient)
+    if recipes.exists():
+        serializer = RecipeSerializer(recipes, many=True)
+        return Response(serializer.data, status=200)
+    return Response({"message": f"No recipes found containing '{ingredient}'"}, status=404)
+# Function-based view for listing recipes by multiple ingredients
+def recipes_by_multiple_ingredients(request):
+    # Example logic for the view
+    if request.method == "GET":
+        # You can handle the logic for fetching recipes by multiple ingredients here
+        data = {"message": "Recipes by multiple ingredients will be listed here."}
+        return JsonResponse(data)
+    return JsonResponse({"error": "Invalid request method"}, status=405)
