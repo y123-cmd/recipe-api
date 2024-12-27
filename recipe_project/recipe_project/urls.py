@@ -27,4 +27,3 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # For refreshing tokens
     path('api/', include('recipes.urls')),  # Include your app's URLs
 ]
-
