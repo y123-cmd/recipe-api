@@ -74,3 +74,13 @@ def recipes_by_multiple_ingredients(request):
         data = {"message": "Recipes by multiple ingredients will be listed here."}
         return JsonResponse(data)
     return JsonResponse({"error": "Invalid request method"}, status=405)
+def recipes_by_multiple_ingredients(request):
+    ingredients = request.GET.getlist('ingredients')
+    if not ingredients:
+        return JsonResponse({'error': "Missing required query parameter 'ingredients'"}, status=400)
+    
+    recipes = Recipe.objects.filter(ingredients__overlap=ingredients)  # Adjust based on your model
+    if recipes.exists():
+        return JsonResponse(list(recipes.values()), safe=False)
+    else:
+        return JsonResponse({'message': "No recipes found containing the specified ingredients"}, status=404)
