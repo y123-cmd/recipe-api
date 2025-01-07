@@ -9,6 +9,11 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
+from .forms import RecipeForm
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt 
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 
 class UserCreateView(CreateView):
     model = User
@@ -84,3 +89,37 @@ def recipes_by_multiple_ingredients(request):
         return JsonResponse(list(recipes.values()), safe=False)
     else:
         return JsonResponse({'message': "No recipes found containing the specified ingredients"}, status=404)
+def create_recipe(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        ingredients = request.POST.get('ingredients')
+        instructions = request.POST.get('instructions')
+
+        # Process the data (e.g., save to database)
+
+        return HttpResponse("Recipe created successfully!")  # Or redirect to another page
+    return render(request, 'recipes/recipe_form.html')
+
+
+def recipe_list(request):
+    recipes = Recipe.objects.all()
+    return render(request, 'recipes/recipe_list.html',{'recipes': recipes})
+
+# Update recipe view
+def update_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if request.method == "POST":
+        recipe.title = request.POST.get('title')
+        recipe.ingredients = request.POST.get('ingredients')
+        recipe.instructions = request.POST.get('instructions')
+        recipe.save()
+        return redirect('recipe_list')  # Redirect to the list view
+    return render(request, 'recipes/update_recipe.html', {'recipe': recipe})
+
+# Delete recipe view
+def delete_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+    if request.method == "POST":
+        recipe.delete()
+        return redirect('recipe_list')  # Redirect to the list view
+    return HttpResponse(status=405)

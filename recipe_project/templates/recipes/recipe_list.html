@@ -1,0 +1,21 @@
+<!-- recipes/templates/recipe_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recipe List</title>
+</head>
+<body>
+    <h1>All Recipes</h1>
+    <ul>
+        {% for recipe in recipes %}
+            <li>
+                {{ recipe.title }} - 
+                <a href="{% url 'update_recipe' recipe.id %}">Edit</a> | 
+                <a href="{% url 'delete_recipe' recipe.id %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'create_recipe' %}">Create New Recipe</a>
+</body>
+</html>

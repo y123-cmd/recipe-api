@@ -1,0 +1,16 @@
+<!-- recipes/templates/recipe_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if form.instance.pk %}Edit Recipe{% else %}Create Recipe{% endif %}</title>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Edit Recipe{% else %}Create New Recipe{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">{% if form.instance.pk %}Update{% else %}Create{% endif %} Recipe</button>
+    </form>
+</body>
+</html>

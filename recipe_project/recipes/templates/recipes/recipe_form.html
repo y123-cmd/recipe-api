@@ -1,0 +1,27 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Recipe</title>
+</head>
+<body>
+    <h1>Create New Recipe</h1>
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <label for="id_title">Title:</label>
+            <input type="text" name="title" maxlength="255" required id="id_title">
+        </p>
+        <p>
+            <label for="id_ingredients">Ingredients:</label>
+            <textarea name="ingredients" cols="40" rows="10" required id="id_ingredients"></textarea>
+        </p>
+        <p>
+            <label for="id_instructions">Instructions:</label>
+            <textarea name="instructions" cols="40" rows="10" required id="id_instructions"></textarea>
+        </p>
+        <button type="submit">Create Recipe</button>
+    </form>
+</body>
+</html>
+
